@@ -1,0 +1,34 @@
+image: laurentdoguin/gitpod-workspacefull-couchbase
+
+tasks:
+- init: ./gradlew bootJar -x test
+  command: java -jar target/*.jar
+  name: Run app
+
+ports:
+  - port: 8090-21300
+    onOpen: ignore
+  - port: 8080
+    visibility: public
+  - port: 3000
+    visibility: public
+  - port: 5000
+    visibility: public
+  - port: 7070
+    visibility: public
+  - port: 8091
+    visibility: public
+  - port: 4369
+    onOpen: ignore
+
+vscode:
+  extensions:
+    - pivotal.vscode-spring-boot
+    - vscjava.vscode-java-pack
+
+jetbrains:
+  intellij:  
+    plugins:
+      - com.haulmont.jpab
+    prebuilds:
+      version: both
