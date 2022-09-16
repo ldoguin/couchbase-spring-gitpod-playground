@@ -4,6 +4,13 @@ tasks:
 - init: ./gradlew bootJar -x test
   command: java -jar target/*.jar
   name: Run app
+- name : Import Couchbase sample bucket
+  command: |
+    gp await-port 8091
+    CB_SAMPLES='["travel-sample"]' /scripts/import-sample-buckets.sh
+- name: Start Couchbase Server
+  command: |
+    sudo runsvdir -P /etc/service
 
 ports:
   - port: 8090-21300
