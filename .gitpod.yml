@@ -11,6 +11,9 @@ tasks:
 - name: Start Couchbase Server
   command: |
     sudo runsvdir -P /etc/service
+- name: Install JDK 17
+  command: |
+    yes | sdk install java
 
 ports:
   - port: 8090-21300
