@@ -1,4 +1,4 @@
-image: laurentdoguin/gitpod-workspacefull-couchbase
+image: laurentdoguin/gitpod-workspace-java-couchbase
 
 tasks:
 - init: ./gradlew bootJar -x test
