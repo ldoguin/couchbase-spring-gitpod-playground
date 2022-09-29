@@ -6,8 +6,6 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
 import com.couchbase.client.java.Cluster;
-import com.couchbase.client.java.Collection;
-import com.couchbase.client.java.json.JsonObject;
 
 @Component
 public class SetupDataLoader implements
@@ -18,24 +16,29 @@ public class SetupDataLoader implements
   @Autowired
   Cluster cluster;
 
+  @Autowired
+  ImporterService importerService;
+
   @Override
   public void onApplicationEvent(ContextRefreshedEvent event) {
 
     if (alreadySetup)
       return;
 
-    Collection collection = cluster.bucket("default")
-        .defaultCollection();
-    User patient = new User("employee:1234", "firstName", "lastName", "email", "password", "France", true, true);
+    importerService.javaImporter(cluster);
+    // Collection collection = cluster.bucket("default")
+    // .defaultCollection();
+    // User patient = new User("employee:1234", "firstName", "lastName", "email",
+    // "password", "France", true, true);
 
-    collection.upsert(patient.getUserId(), patient);
-    JsonObject encrypted = collection.get(patient.getUserId())
-        .contentAsObject();
-    System.out.println(encrypted.get("encrypted$password"));
+    // collection.upsert(patient.getUserId(), patient);
+    // JsonObject encrypted = collection.get(patient.getUserId())
+    // .contentAsObject();
+    // System.out.println(encrypted.get("encrypted$password"));
 
-    User readItBack = collection.get(patient.getUserId())
-        .contentAs(User.class);
-    System.out.println(readItBack.getPassword());
+    // User readItBack = collection.get(patient.getUserId())
+    // .contentAs(User.class);
+    // System.out.println(readItBack.getPassword());
 
     alreadySetup = true;
   }
