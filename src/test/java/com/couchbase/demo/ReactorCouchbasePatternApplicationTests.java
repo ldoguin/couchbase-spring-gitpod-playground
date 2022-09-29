@@ -1,20 +1,19 @@
 package com.couchbase.demo;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.security.KeyStore;
 import java.security.SecureRandom;
 
+import org.jeasy.random.EasyRandom;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.couchbase.client.encryption.KeyStoreKeyring;
 import com.couchbase.client.java.Cluster;
-import com.couchbase.client.java.Collection;
-import com.couchbase.client.java.codec.JsonValueSerializerWrapper;
-import com.couchbase.client.java.json.JacksonTransformers;
-import com.couchbase.client.java.json.JsonObject;
 
 @SpringBootTest
 class ReactorCouchbasePatternApplicationTests {
@@ -24,6 +23,9 @@ class ReactorCouchbasePatternApplicationTests {
 
 	@Test
 	void contextLoads() throws Exception {
+		EasyRandom easyRandom = new EasyRandom();
+		Patient p = easyRandom.nextObject(Patient.class);
+		assertNotNull(p);
 	}
 
 	@Test

@@ -28,9 +28,11 @@ public class ImporterService {
                 // .overrideDefaultInitialization(false)
                 .ignoreRandomizationErrors(true);
 
+        
         EasyRandom easyRandom = new EasyRandom(parameters);
-        Flux<User> users = Flux.interval(Duration.ofMillis(10)).map( i -> easyRandom.nextObject(User.class));
-        Flux<MutationResult> mutationtRestulFlux = users.map(user -> cluster.bucket("default").defaultCollection().upsert(user.getUserId(),user));
+        
+        Flux<Patient> patients = Flux.interval(Duration.ofMillis(10)).map( i -> easyRandom.nextObject(Patient.class)).doOnNext(System.out::println);
+        Flux<MutationResult> mutationtRestulFlux = patients.map(user -> cluster.bucket("default").defaultCollection().upsert(user.getUserId(),user));
         mutationtRestulFlux.subscribe();
     }
 
