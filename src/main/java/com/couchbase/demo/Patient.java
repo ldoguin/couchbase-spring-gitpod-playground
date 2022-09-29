@@ -1,10 +1,5 @@
 package com.couchbase.demo;
 
-import java.math.BigDecimal;
-
-import javax.validation.constraints.DecimalMax;
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.Digits;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 

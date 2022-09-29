@@ -5,17 +5,12 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
-import com.couchbase.client.java.Cluster;
-
 @Component
 public class SetupDataLoader implements
     ApplicationListener<ContextRefreshedEvent> {
 
   boolean alreadySetup = false;
-
-  @Autowired
-  Cluster cluster;
-
+  
   @Autowired
   ImporterService importerService;
 
@@ -25,7 +20,7 @@ public class SetupDataLoader implements
     if (alreadySetup)
       return;
 
-    importerService.javaImporter(cluster);
+    importerService.javaImporter();
     // Collection collection = cluster.bucket("default")
     // .defaultCollection();
     // User patient = new User("employee:1234", "firstName", "lastName", "email",

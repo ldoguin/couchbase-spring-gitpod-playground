@@ -2,12 +2,9 @@ package com.couchbase.demo;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
 import java.util.Random;
 
 import org.jeasy.random.api.Randomizer;
-
-import reactor.core.publisher.Flux;
 
 public class MyCountryRandomizer implements Randomizer<String> {
 

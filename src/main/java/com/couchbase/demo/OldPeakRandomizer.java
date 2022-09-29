@@ -1,6 +1,5 @@
 package com.couchbase.demo;
 
-import org.jeasy.random.EasyRandom;
 import org.jeasy.random.api.Randomizer;
 
 public class OldPeakRandomizer implements Randomizer<Double> {

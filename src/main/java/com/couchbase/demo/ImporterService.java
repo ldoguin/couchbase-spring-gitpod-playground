@@ -14,7 +14,15 @@ import reactor.core.publisher.Flux;
 @Service
 public class ImporterService {
 
-    public void javaImporter(Cluster cluster) {
+    ClusterPropeties clusterProperties;
+    Cluster cluster;
+
+    public ImporterService(ClusterPropeties clusterProperties, Cluster cluster) {
+        this.cluster = cluster;
+        this.clusterProperties = clusterProperties;
+    }
+
+    public void javaImporter() {
         EasyRandomParameters parameters = new EasyRandomParameters()
                 .seed(123L)
                 // .objectPoolSize(100)
@@ -32,7 +40,7 @@ public class ImporterService {
         EasyRandom easyRandom = new EasyRandom(parameters);
         
         Flux<Patient> patients = Flux.interval(Duration.ofMillis(10)).map( i -> easyRandom.nextObject(Patient.class)).doOnNext(System.out::println);
-        Flux<MutationResult> mutationtRestulFlux = patients.map(user -> cluster.bucket("default").defaultCollection().upsert(user.getUserId(),user));
+        Flux<MutationResult> mutationtRestulFlux = patients.map(user -> cluster.bucket(clusterProperties.defaultBucket()).collection(clusterProperties.defaultCollection()).upsert(user.getUserId(),user));
         mutationtRestulFlux.subscribe();
     }
 

@@ -7,12 +7,14 @@ import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.couchbase.config.AbstractCouchbaseConfiguration;
 import org.springframework.data.couchbase.repository.config.EnableCouchbaseRepositories;
 
 import com.couchbase.client.core.encryption.CryptoManager;
+import com.couchbase.client.core.env.SecurityConfig;
 import com.couchbase.client.core.error.CouchbaseException;
 import com.couchbase.client.encryption.AeadAes256CbcHmacSha512Provider;
 import com.couchbase.client.encryption.DefaultCryptoManager;
@@ -28,24 +30,27 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @EnableCouchbaseRepositories(basePackages = { "com.couchbase.demo" })
 public class MyCouchbaseConfig extends AbstractCouchbaseConfiguration {
 
+    @Autowired
+    ClusterPropeties clusterPropeties;
+
     @Override
     public String getConnectionString() {
-        return "couchbase://127.0.0.1";
+        return clusterPropeties.connectionString();
     }
 
     @Override
     public String getUserName() {
-        return "Administrator";
+        return clusterPropeties.username();
     }
 
     @Override
     public String getPassword() {
-        return "Administrator";
+        return clusterPropeties.password();
     }
 
     @Override
     public String getBucketName() {
-        return "default";
+        return clusterPropeties.defaultBucket();
     }
 
     protected boolean autoIndexCreation() {
@@ -60,7 +65,7 @@ public class MyCouchbaseConfig extends AbstractCouchbaseConfiguration {
         try {
             javaKeyStore = KeyStore.getInstance("JCEKS");
             FileInputStream fis = new java.io.FileInputStream(
-                    "/workspace/couchbase-spring-gitpod-playground/MyKeystoreFile.jceks");
+                    clusterPropeties.encryptionKey());
             javaKeyStore.load(fis, "integrity-password".toCharArray());
             keyring = new KeyStoreKeyring(javaKeyStore, keyName -> "protection-password");
             // AES-256 authenticated with HMAC SHA-512. Requires a 64-byte key.
@@ -83,6 +88,7 @@ public class MyCouchbaseConfig extends AbstractCouchbaseConfiguration {
         mapper.registerModule(new EncryptionModule(cryptoManager));
         mapper.registerModule(new JsonValueModule());
         builder.jsonSerializer(JacksonJsonSerializer.create(mapper));
+        builder.securityConfig(SecurityConfig.builder().enableTls(true));
         configureEnvironment(builder);
         return builder.build();
     }
