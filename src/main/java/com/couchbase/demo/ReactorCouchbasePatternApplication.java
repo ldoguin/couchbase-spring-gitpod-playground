@@ -9,7 +9,6 @@ public class ReactorCouchbasePatternApplication {
 
 	public static void main(String[] args) {
 		ConfigurableApplicationContext ctx = SpringApplication.run(ReactorCouchbasePatternApplication.class, args);
-		ctx.close();
 	}
 
 }
