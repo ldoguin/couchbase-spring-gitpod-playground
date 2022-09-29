@@ -1,19 +1,19 @@
 image: laurentdoguin/gitpod-workspace-java-couchbase
 
 tasks:
-- init: ./gradlew bootJar -x test
-  command: java -jar target/*.jar
-  name: Run app
-- name : Import Couchbase sample bucket
-  command: |
-    gp await-port 8091
-    CB_SAMPLES='["travel-sample"]' /scripts/import-sample-buckets.sh
-- name: Start Couchbase Server
-  command: |
-    sudo runsvdir -P /etc/service
-- name: Install JDK 17
-  command: |
-    yes | sdk install java
+  - init: ./gradlew bootJar -x test
+    command: java -jar target/*.jar
+    name: Run app
+  - name: Import Couchbase sample bucket
+    command: |
+      gp await-port 8091
+      CB_SAMPLES='["travel-sample"]' /scripts/import-sample-buckets.sh
+  - name: Start Couchbase Server
+    command: |
+      sudo runsvdir -P /etc/service
+  - name: Install JDK 17
+    command: |
+      yes | sdk install java
 
 ports:
   - port: 8090-21300
@@ -37,7 +37,7 @@ vscode:
     - vscjava.vscode-java-pack
 
 jetbrains:
-  intellij:  
+  intellij:
     plugins:
       - com.haulmont.jpab
     prebuilds:
