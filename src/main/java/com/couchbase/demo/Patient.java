@@ -28,6 +28,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Patient {
 
+    @Randomizer(value = RegularExpressionRandomizer.class, args = @RandomizerArgument(value = "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{16}", type = String.class))
     private String userId;
 
     @Randomizer(FirstNameRandomizer.class)
